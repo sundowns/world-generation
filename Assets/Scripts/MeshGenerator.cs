@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshCollider))]
 public class MeshGenerator : MonoBehaviour
 {
     Mesh mesh;
@@ -11,6 +12,7 @@ public class MeshGenerator : MonoBehaviour
     Color[] colours;
 
     public Gradient gradient;
+    public MeshCollider mesh_collider = null;
 
     // Start is called before the first frame update
     void Start()
@@ -94,7 +96,9 @@ public class MeshGenerator : MonoBehaviour
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.colors = colours;
-
         mesh.RecalculateNormals();
+
+        if (mesh_collider != null)
+            mesh_collider.sharedMesh = mesh;
     }
 }
