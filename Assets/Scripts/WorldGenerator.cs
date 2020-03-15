@@ -8,6 +8,10 @@ public class WorldGenerator : MonoBehaviour
     public int cols = 50;
     public int rows = 50;
     public float world_height = 10f;
+    [Range(0, 1)]
+    public float water_level = 0.1f;
+    [Range(0, 20)]
+    public float terrace_height = 0.5f;
 
     // Noise Generation values
     public int octaves = 4;
@@ -29,6 +33,6 @@ public class WorldGenerator : MonoBehaviour
 
         var noise_map = NoiseGenerator.GenerateNoiseMap(cols, rows, seed, noise_scale, octaves, persistence, lacunarity, noise_offset);
 
-        GetComponent<MeshGenerator>().Generate(noise_map, cols, rows, world_height);
+        GetComponent<MeshGenerator>().Generate(noise_map, cols, rows, world_height, water_level, terrace_height);
     }
 }

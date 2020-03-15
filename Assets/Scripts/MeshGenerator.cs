@@ -26,12 +26,18 @@ public class MeshGenerator : MonoBehaviour
         UpdateMesh();
     }
 
-    public void Generate(float[,] noise_map, int cols, int rows, float world_height)
+    float ToTerracedHeight(float height, float terrace_height)
+    {
+        return Mathf.Round(height / terrace_height) * terrace_height;
+    }
+
+    public void Generate(float[,] noise_map, int cols, int rows, float world_height, float water_level, float terrace_height)
     {
         vertices = new Vector3[(cols) * (rows)];
 
         float max_height = 0f;
         float min_height = world_height;
+        float water_height = water_level * world_height;
 
         // Define the vertices
         for (int i = 0, z = 0; z < rows; z++)
@@ -39,7 +45,8 @@ public class MeshGenerator : MonoBehaviour
             for (int x = 0; x < cols; x++, i++)
             {
                 var y = world_height * noise_map[x, z];
-                vertices[i] = new Vector3(x, y, z);
+
+                vertices[i] = new Vector3(x, Mathf.Max(ToTerracedHeight(y, terrace_height), water_height), z);
 
                 // Find the min/max height positions of the mesh (used to normalize colour picking later)
                 if (y > max_height)
